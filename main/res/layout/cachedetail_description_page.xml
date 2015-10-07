@@ -23,7 +23,8 @@
             android:textColor="?text_color"
             android:textColorLink="?text_color_link"
             android:textSize="14sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:textIsSelectable="true"/>
 
         <!-- Long description -->
 
@@ -37,7 +38,8 @@
             android:textColor="?text_color"
             android:textColorLink="?text_color_link"
             android:textSize="14sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:textIsSelectable="true"/>
 
         <Button
             android:id="@+id/show_description"

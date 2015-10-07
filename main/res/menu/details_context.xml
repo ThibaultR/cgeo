@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <item
+        android:id="@+id/menu_select_all"
+        android:title="@android:string/selectAll"
+        app:showAsAction="always|withText">
+    </item>
+    <item
         android:id="@+id/menu_copy"
         android:icon="@drawable/ic_menu_copy_holo_dark"
         android:title="@android:string/copy"

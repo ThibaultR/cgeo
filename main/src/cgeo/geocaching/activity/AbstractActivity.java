@@ -1,5 +1,9 @@
 package cgeo.geocaching.activity;
 
+import android.text.Selection;
+import android.text.Spannable;
+import android.util.Log;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 
 import cgeo.geocaching.CgeoApplication;
@@ -167,6 +171,7 @@ public abstract class AbstractActivity extends ActionBarActivity implements IAbs
 
     protected void buildDetailsContextMenu(final ActionMode actionMode, final Menu menu, final CharSequence fieldTitle, final boolean copyOnly) {
         actionMode.setTitle(fieldTitle);
+        menu.findItem(R.id.menu_select_all).setVisible(!copyOnly);
         menu.findItem(R.id.menu_translate_to_sys_lang).setVisible(!copyOnly);
         if (!copyOnly) {
             menu.findItem(R.id.menu_translate_to_sys_lang).setTitle(res.getString(R.string.translate_to_sys_lang, Locale.getDefault().getDisplayLanguage()));
@@ -175,12 +180,18 @@ public abstract class AbstractActivity extends ActionBarActivity implements IAbs
         menu.findItem(R.id.menu_translate_to_english).setVisible(!copyOnly && !localeIsEnglish);
     }
 
-    protected boolean onClipboardItemSelected(@NonNull final ActionMode actionMode, final MenuItem item, final CharSequence clickedItemText) {
+    protected boolean onClipboardItemSelected(@NonNull final ActionMode actionMode, final MenuItem item, final CharSequence clickedItemText, final View clickedItemView) {
         if (clickedItemText == null) {
             return false;
         }
         switch (item.getItemId()) {
             // detail fields
+            case R.id.menu_select_all:
+                Selection.selectAll((Spannable)((TextView)clickedItemView).getText());
+                //*Selection.selectAll((Spannable)clickedItemText);
+                ClipboardUtils.copyToClipboard(clickedItemText);
+                showToast("coucocu");
+                return true;
             case R.id.menu_copy:
                 ClipboardUtils.copyToClipboard(clickedItemText);
                 showToast(res.getString(R.string.clipboard_copy_ok));

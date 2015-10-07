@@ -176,6 +176,7 @@ public class CacheDetailActivity extends AbstractViewPagerActivity<CacheDetailAc
     private GeoDirHandler locationUpdater;
 
     private CharSequence clickedItemText = null;
+    private View clickedItemView = null;
 
     /**
      * If another activity is called and can modify the data of this activity, we refresh it on resume.
@@ -1414,6 +1415,7 @@ public class CacheDetailActivity extends AbstractViewPagerActivity<CacheDetailAc
             // long description
             if (StringUtils.isNotBlank(cache.getDescription())) {
                 if (Settings.isAutoLoadDescription()) {
+
                     loadLongDescription();
                 } else {
                     showDesc.setVisibility(View.VISIBLE);
@@ -1910,6 +1912,7 @@ public class CacheDetailActivity extends AbstractViewPagerActivity<CacheDetailAc
                     }
 
                     private boolean prepareClipboardActionMode(final View view, final ActionMode actionMode, final Menu menu) {
+                        clickedItemView = view;
                         switch (view.getId()) {
                             case R.id.value: // coordinates, gc-code, name
                                 assert view instanceof TextView;
@@ -1918,10 +1921,12 @@ public class CacheDetailActivity extends AbstractViewPagerActivity<CacheDetailAc
                                 buildDetailsContextMenu(actionMode, menu, itemTitle, true);
                                 return true;
                             case R.id.shortdesc:
+                                Log.e(((TextView) view).getSelectionStart() + "");
                                 clickedItemText = cache.getShortDescription();
                                 buildDetailsContextMenu(actionMode, menu, res.getString(R.string.cache_description), false);
                                 return true;
                             case R.id.longdesc:
+                                Log.e( ((TextView)view).getSelectionStart() + "" );
                                 // combine short and long description
                                 final String shortDesc = cache.getShortDescription();
                                 if (StringUtils.isBlank(shortDesc)) {
@@ -1976,7 +1981,7 @@ public class CacheDetailActivity extends AbstractViewPagerActivity<CacheDetailAc
                                 return true;
                                 // handle clipboard actions in base
                             default:
-                                return onClipboardItemSelected(actionMode, menuItem, clickedItemText);
+                                return onClipboardItemSelected(actionMode, menuItem, clickedItemText, clickedItemView);
                         }
                     }
                 });
